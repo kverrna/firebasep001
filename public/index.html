@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Firebase Hosting</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/5.9.2/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/5.9.2/firebase-auth.js"></script>
+    <script defer src="/__/firebase/5.9.2/firebase-database.js"></script>
+    <script defer src="/__/firebase/5.9.2/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/5.9.2/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+  </head>
+  <template id="baseline-template">
+    <v-app id="inspire">
+      <v-navigation-drawer
+        v-model="drawer"
+        fixed
+        app
+      >
+        <v-list dense>
+          <v-list-tile @click="">
+            <v-list-tile-action>
+              <v-icon>home</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Home</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          
+        </v-list>
+      </v-navigation-drawer>
+      <v-toolbar color="indigo" dark fixed app>
+        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+        <v-toolbar-title>Orçamento</v-toolbar-title>
+      </v-toolbar>
+      <v-content>
+
+         <!-- INICIO CABECALIO-->
+         <v-container fluid grid-list-md>
+            <div style="text-align: center">
+             
+              <v-layout row >
+                <v-flex grow d-flex xs12 sm6 md12>
+                  <v-card color="blue lighten-2" dark>
+                    <h1><v-card-text >{{ titulo }}</v-card-text></h1>
+                  </v-card>
+              </v-flex>
+            </v-layout>
+              
+            </div>
+            <v-layout row wrap>
+              <v-flex d-flex xs12 sm6 md6>
+                <v-card color="purple" dark>
+                 
+                <table border="1" cellpadding="0" cellspacing="0" style="width:800px">
+                  <tbody>
+                    <tr>
+                      <td>
+                      <p><img alt="" height="200" src="https://s3.amazonaws.com/projeto-base/2dd430f2-83b0-4d2c-9efb-9fe42f1bc2f8.jpg" width="150" /></p>
+      
+                      <p><sub><em>C.N.P.J 00.000.000/0001-00</em></sub></p>
+                      </td>
+                      <td>
+                      <p style="text-align:center"><span style="font-size:26px"><strong>Orcamento</strong></span></p>
+      
+                      <p style="text-align:center"><span style="font-size:26px"><strong>Porto Seguro Tradicional</strong></span></p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+       
+                </v-card>
+              </v-flex>
+              
+              <div align="center">
+              <v-flex d-flex xs12 sm6 md>
+                <v-card color="blue lighten-2" dark>
+                  <table align="center" border="1px solid black" cellpadding="10" cellspacing="0" style="width: 500px">
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong>Emissao</strong>: dd/mm/aaaa</td>
+                        <td>
+                            <strong>Numero orcamento</strong>: 000</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Vigencia</strong>:  dd/mm/aaaa</td>
+                        <td>
+                            <strong>Tipo seguro</strong>: XXXXX</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>ate as 24H</strong>: dd/mm/aaaa</td>
+                        <td>
+                            <strong><em>Impressao</em></strong>:  dd/mm/aaaa - hh:mm:ss</td>
+                    </tr>
+                </tbody>
+            </table>
+                </v-card>
+              </v-flex>
+              </div>
+            </v-layout>
+          </v-container>
+          <!-- FIM CABECALIO-->
+
+        <v-container fluid fill-height>
+          <v-layout
+            justify-center
+            align-center
+          >
+
+          
+            <v-flex text-xs-center>
+             
+              <!-- INICIO CONTEUDO-->
+
+              <template>
+                <v-stepper v-model="e6" vertical>
+                  <v-stepper-step :complete="e6 > 1" step="1">
+                    Select an app
+                    <small>Summarize if needed</small>
+                  </v-stepper-step>
+              
+                  <v-stepper-content step="1">
+                    <v-card color="blue lighten-1" class="mb-5" height="200px"></v-card>
+                    <v-btn color="primary" @click="e6 = 2">Avancar</v-btn>
+                  </v-stepper-content>
+              
+                  <v-stepper-step :complete="e6 > 2" step="2">Configure analytics for this app</v-stepper-step>
+              
+                  <v-stepper-content step="2">
+                    <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+                    <v-btn color="primary" @click="e6 = 3">Avancar</v-btn>
+                    <v-btn flat @click = "e6 = 1">Voltar</v-btn>
+                  </v-stepper-content>
+              
+                  <v-stepper-step :rules="[() => e6 %2===0]" :complete="e6 > 3" step="3">
+                    Select an ad format and name ad unit
+                    <small>Alert message</small>
+                  </v-stepper-step>
+              
+                  <v-stepper-content step="3">
+                    <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+                    <v-btn color="primary" @click="e6 = 4">Avancar</v-btn>
+                    <v-btn flat @click = "e6 = 2">Voltar</v-btn>
+                  </v-stepper-content>
+              
+                  <v-stepper-step step="4">View setup instructions</v-stepper-step>
+                  <v-stepper-content step="4">
+                    <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+                    <v-btn color="primary" @click="e6 = 1">Avancar</v-btn>
+                    <v-btn flat @click = "e6 = 3">Voltar</v-btn>
+                  </v-stepper-content>
+                </v-stepper>
+              </template>
+
+              <template>
+                  <v-btn block color="success" dark>Concluir</v-btn>
+              </template>
+
+              <!-- FIM CONTEUDO-->
+
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-content>
+      <v-footer color="indigo" app>
+        <span class="white--text">&copy; 2017</span>
+      </v-footer>
+    </v-app>
+  </template>
+ 
+  <body>
+    <div id="app">
+      <v-app>
+        <v-content>
+          <v-container>
+            <button-counter></button-counter>
+          </v-container>
+        </v-content>
+      </v-app>
+    </div>
+   
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+    <script>
+      
+      Vue.component('button-counter', {
+        data: () => ({
+          drawer: false,
+          e6: 1
+        }),
+        props: {
+          source: String
+        },
+        template:'#baseline-template' 
+      })
+     
+      new Vue({ el: '#app'});
+      
+    </script>
+  </body>
+</html>
