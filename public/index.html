@@ -49,9 +49,6 @@
                   </v-card>
                 </v-flex>
               </v-layout>
-              
-              
-              
             </div>
            
             <v-layout row="" wrap="">
@@ -117,12 +114,108 @@
               <template>
                 <v-stepper v-model="e6" vertical="">
                   <v-stepper-step :complete="e6 > 1" step="1">
-                    Select an app
-                    <small>Summarize if needed</small>
+                    Dados do Corretor
+<!--                     <small>Summarize if needed</small> -->
                   </v-stepper-step>
               
                   <v-stepper-content step="1">
-                    <v-card color="blue lighten-1" class="mb-5" height="200px"></v-card>
+                    <v-card color="white lighten-1" class="mb-5" height="200px">
+                    
+                      <v-form v-model="valid">
+                        <v-container>
+                          <v-layout>
+                            <v-flex
+                              xs12
+                              md4
+                            >
+                              <v-text-field
+                                v-model="susep"
+                                label="SUSEP"
+                                required
+                                outline
+                              ></v-text-field>
+                            </v-flex>
+
+                            <v-flex
+                              xs12
+                              md4
+                            >
+                              <v-text-field
+                                v-model="corretor"
+                                label="Corretor líder"
+                                required
+                                outline
+                              ></v-text-field>
+                            </v-flex>
+
+                            <v-flex
+                              xs12
+                              md4
+                            >
+                              <v-text-field
+                                v-model="email"
+                                label="Telefone"
+                                required
+                                outline
+                              ></v-text-field>
+                            </v-flex>
+                            <v-flex
+                              xs12
+                              md4
+                            >
+                              <v-text-field
+                                v-model="participacao"
+                                label="% Participação"
+                                required
+                                outline
+                              ></v-text-field>
+                            </v-flex>
+                          </v-layout>
+
+                          <v-layout>
+
+                            <v-flex
+                              xs12
+                              md4
+                            >
+                              <v-text-field
+                                v-model="email"
+                                :rules="emailRules"
+                                label="E-mail"
+                                required
+                                outline
+                              ></v-text-field>
+                            </v-flex>
+
+                            <v-flex
+                              xs12
+                              md4
+                            >
+                              <v-text-field
+                                v-model="codOpe"
+                                label="Código de Operação"
+                                required
+                                outline
+                              ></v-text-field>
+                            </v-flex>
+
+                            <v-flex
+                              xs12
+                              md4
+                            >
+                              <v-select
+                                :items="unidadesOperacionais"
+                                label="Unidade Operacional"
+                                outline
+                              ></v-select>
+                            </v-flex>
+
+                          </v-layout>
+
+                        </v-container>
+                      </v-form>
+                    
+                    </v-card>
                     <v-btn color="primary" @click="e6 = 2">Avancar</v-btn>
                   </v-stepper-content>
               
@@ -197,7 +290,12 @@
         template:'#baseline-template' 
       })
      
-      new Vue({ el: '#app'});
+      new Vue({
+              el: '#app',
+              data: () => ({
+                unidadesOperacionais: ['Unidade 01', 'Unidade 02', 'Unidade 03', 'Unidade 04']
+              })
+            });
       
     </script>
   
