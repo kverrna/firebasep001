@@ -219,18 +219,18 @@
                         <v-container>
                           <v-layout>
                             <v-flex xs12="" md4="">
-                              <v-text-field v-model="cep" label="CEP" :rules="requiredRule" required outline="" :mask="maskCEP" append-outer-icon="search"></v-text-field>
+                              <v-text-field v-model="cep" label="CEP" :rules="requiredRule" required outline="" :mask="maskCEP" append-outer-icon="search" @click:append-outer="buscaCep"></v-text-field>
                             </v-flex>
 
                             <v-flex xs12="" md4="">
-                              <v-select :items="estadoUf" label="Estado" outline=""></v-select>
+                              <v-text-field v-model="uf" value="uf" label="Estado" required outline="" disabled></v-text-field>
                             </v-flex>
 
                             <v-flex xs12="" md4="">
-                              <v-select :items="cidade" label="Cidade" outline=""></v-select>
+                              <v-text-field v-model="cidade" value="cidade" label="Cidade"  required outline="" disabled></v-text-field>
                             </v-flex>
                             <v-flex xs12="" md4="">
-                              <v-text-field v-model="logradouro" label="Logradouro" :rules="requiredRule" required outline=""></v-text-field>
+                              <v-text-field v-model="logradouro" value="logradouro" label="Logradouro" required outline="" disabled></v-text-field>
                             </v-flex>
                           </v-layout>
 
@@ -395,6 +395,10 @@
           estadoCivil: [ { label: 'Solteiro', value: 1 }, { label: 'Casado', value: 2 }, { label: 'Separado', value: 3 },{ label: 'Divorciado', value: 4 }, { label: 'Viúvo', value: 5 } ],
           email: '',
           renda: 0,
+          cep: null,
+          uf: null,
+          cidade: null,
+          logradouro: null,
           rendaFormatado: 'R$ 0,00',
           maskCPF: '###.###.###/##',
           maskCNPJ: '##.###.###/####-##',
@@ -477,24 +481,33 @@
                     avancar_teste: function(){
                       return e6 = 2
                     },
-                    avancar_dados_corretor(){ 
-                      this.$validator.validate("email").then((result) =>{
-                        if(result){
-                          alert(e6);
-                          e6 = 2;
-                          alert(e6);
-                        }else 
-                            {
-                              alert('Email incorreto');
-                            }
-                      });
-                    },
                     formatPrice(value) {
                         let val = (value/1).toFixed(2).replace('.', ',')
                         return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
                     },
                     formatarValorFinanceiro(value){
                       this.renda = this.formatPrice(value);
+                    },
+                    buscaCep(){
+                      fetch(`https://viacep.com.br/ws/${this.cep}/json/unicode/`)
+                      .then((resp) => resp.json())
+                      .then(function(data) {
+                        const { erro } = data;
+                        if(erro){
+                          console.log('Cep não encontrado')
+                        }else
+                          {
+                            const { bairro, localidade, logradouro, uf } = data;
+                            this.cidade = localidade;
+                            this.uf = uf;
+                            this.logradouro = logradouro;
+                            console.log(`Bairro: ${bairro}, Logradouro: ${logradouro}, Localidade: ${localidade}, UF: ${uf}`);
+                          }
+                        
+                        })
+                      .catch(function(error) {
+                        console.log(`Erro ${error}`)
+                      });  
                     }
                   }
       });
