@@ -124,35 +124,35 @@
                         <v-container>
                           <v-layout>
                             <v-flex xs12="" md4="">
-                              <v-text-field v-model="susep" label="SUSEP" required="" outline=""></v-text-field>
+                              <v-text-field v-model="susep" label="SUSEP"  :rules="requiredRule" required outline=""></v-text-field>
                             </v-flex>
 
                             <v-flex xs12="" md4="">
-                              <v-text-field v-model="corretor" label="Corretor líder" required="" outline=""></v-text-field>
+                              <v-text-field v-validate="'required'" v-model="corretor" label="Corretor líder" :rules="requiredRule" required outline=""></v-text-field>
                             </v-flex>
 
                             <v-flex xs12="" md4="">
-                              <v-text-field v-model="email" label="Telefone" required="" outline=""></v-text-field>
+                              <v-text-field v-model="telefone" label="Telefone" :rules="requiredRule" required outline=""></v-text-field>
                             </v-flex>
                             <v-flex xs12="" md4="">
-                              <v-text-field v-model="participacao" label="% Participação" required="" outline=""></v-text-field>
+                              <v-text-field v-model="participacao" label="% Participação" :rules="requiredRule" required outline=""></v-text-field>
                             </v-flex>
                           </v-layout>
 
                           <v-layout>
 
                             <v-flex xs12="" md4="">
-                              <v-text-field v-model="email" :rules="emailRules" label="E-mail" required="" outline=""></v-text-field>
+                              <v-text-field  v-model="email"  label="E-mail" :rules="emailRules" required outline=""></v-text-field>
                             </v-flex>
 
                             <v-flex xs12="" md4="">
-                              <v-text-field v-model="codOpe" label="Código de Operação" required="" outline=""></v-text-field>
+                              <v-text-field v-model="codOpe" label="Código de Operação" :rules="requiredRule" required outline=""></v-text-field>
                             </v-flex>
 
                             <v-flex xs12="" md4="">
                               <v-select :items="unidadesOperacionais" label="Unidade Operacional" outline=""></v-select>
                             </v-flex>
-
+                            
                           </v-layout>
 
                         </v-container>
@@ -161,7 +161,7 @@
                     <v-btn color="primary" @click="e6 = 2">Avançar</v-btn>
                   </v-stepper-content>
               
-                  <v-stepper-step :complete="e6 > 2" step="2">Dados Gerais</v-stepper-step>
+                  <v-stepper-step :complete="e6 > 2" step="2">Dados Gerais {{formatPrice(10000)}}</v-stepper-step>
               
                   <v-stepper-content step="2">
                     
@@ -169,15 +169,19 @@
                         <v-container>
                           <v-layout>
                             <v-flex xs12="" md4="">
-                              <v-text-field v-model="pretendente" label="Pretendente" required="" outline=""></v-text-field>
+                              <v-text-field v-model="pretendente" label="Pretendente" :rules="requiredRule" required outline=""></v-text-field>
                             </v-flex>
 
                             <v-flex xs12="" md4="">
-                              <v-select :items="tipoPessoa" label="Tipo Pessoa" outline=""></v-select>
+                              <v-select :items="tipoPessoa" item-text ="label" item-value="value" label="Tipo Pessoa" v-model="tipoPessoaSelecionado" outline="" ></v-select>
                             </v-flex>
-
-                            <v-flex xs12="" md4="">
-                              <v-text-field v-model="cpf" label="CPF" required="" outline=""></v-text-field>
+                            
+                            <v-flex xs12="" md4="" v-if = "tipoPessoaSelecionado === 1">
+                              <v-text-field v-model="cpf" label="CPF" :rules="requiredRule" required outline="" :mask="maskCPF" ></v-text-field>
+                            </v-flex>
+                            
+                            <v-flex xs12="" md4="" v-else >
+                              <v-text-field v-model="cnpj" label="CNPJ" :rules="requiredRule" required outline="" :mask="maskCNPJ" ></v-text-field>
                             </v-flex>
                             
                           </v-layout>
@@ -189,11 +193,11 @@
                             </v-flex>
 
                             <v-flex xs12="" md4="">
-                              <v-text-field v-model="renda" label="Renda" required="" outline=""></v-text-field>
+                              <v-text-field v-model="renda" label="Renda" :rules="requiredRule" required  outline=""></v-text-field>
                             </v-flex>
 
                             <v-flex xs12="" md4="">
-                              <v-select :items="estadoCivil" label="Estado Civil" outline=""></v-select>
+                              <v-select :items="estadoCivil" item-text = "label" item-value="value" label="Estado Civil" outline=""></v-select>
                             </v-flex>
 
                           </v-layout>
@@ -215,7 +219,7 @@
                         <v-container>
                           <v-layout>
                             <v-flex xs12="" md4="">
-                              <v-text-field v-model="cep" label="CEP" required="" outline=""></v-text-field>
+                              <v-text-field v-model="cep" label="CEP" :rules="requiredRule" required outline="" :mask="maskCEP" append-outer-icon="search"></v-text-field>
                             </v-flex>
 
                             <v-flex xs12="" md4="">
@@ -226,7 +230,7 @@
                               <v-select :items="cidade" label="Cidade" outline=""></v-select>
                             </v-flex>
                             <v-flex xs12="" md4="">
-                              <v-text-field v-model="logradouro" label="Logradouro" required="" outline=""></v-text-field>
+                              <v-text-field v-model="logradouro" label="Logradouro" :rules="requiredRule" required outline=""></v-text-field>
                             </v-flex>
                           </v-layout>
 
@@ -248,53 +252,92 @@
                     <v-btn flat="" @click="e6 = 2">Voltar</v-btn>
                   </v-stepper-content>
               
-                  <v-stepper-step step="4"  >Coberturas</v-stepper-step>
+                  <v-stepper-step step="4">Coberturas</v-stepper-step>
                   <v-stepper-content step="4">
-                    <v-card color="grey lighten-1" class="mb-5" height="200px">
-                      
-                      <v-data-table
-                        :headers="headers"
-                        :items="coberturasDados"
-                        class="elevation-1"
-                      >
+                      <v-data-table :headers="headers" :items="coberturasDados" class="elevation-1">
                         <template v-slot:items="props">
-                          <td >{{ props.item.cobertura }}</td>
-                          <td >{{ props.item.verba }}</td>
-                          <td >{{ props.item.premio }}</td>
+                          <td>{{ props.item.cobertura }}</td>
+                          <td>{{ props.item.verba }}</td>
+                          <td>{{ props.item.premio }}</td>
                         </template>
                       </v-data-table>
-                      
-                    </v-card>
+                      <h2>TOTAL PRÊMIO LÍQUIDO: R$ 0.000,00</h2>
                     <v-btn color="primary" @click="e6 = 5">Avançar</v-btn>
                     <v-btn flat="" @click="e6 = 3">Voltar</v-btn>
                   </v-stepper-content>
                   
-                  <v-stepper-step step="5" >Demonstrativo de prêmio</v-stepper-step>
+                  <v-stepper-step step="5">Demonstrativo de prêmio</v-stepper-step>
                   <v-stepper-content step="5">
-                    <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+                    <v-data-table :items="demonstrativoPremio" class="elevation-1">
+                        <template v-slot:items="props">
+                          <td>{{ props.item.coberturaC1 }}</td>
+                          <td>{{ props.item.premioC1 }}</td>
+                          <td>{{ props.item.coberturaC2 }}</td>
+                          <td>{{ props.item.premioC2 }}</td>
+                        </template>
+                      </v-data-table>
+                    <div> 
+                      <br>
+                      <br>
+                      <p>"Este orçamento não garante aceitação de risco."</p>
+                      <p>"Este orçamento não garante aceitação de risco."</p>
+                      <p>"Este orçamento não garante aceitação de risco."</p>
+                      <p>"Este orçamento não garante aceitação de risco."</p>
+                      <p>"Este orçamento não garante aceitação de risco."</p>
+                      <p>"Este orçamento não garante aceitação de risco."</p>
+                    </div>
                     <v-btn color="primary" @click="e6 = 6">Avançar</v-btn>
-                    <v-btn flat="" @click="e6 = 3">Voltar</v-btn>
+                    <v-btn flat="" @click="e6 = 4">Voltar</v-btn>
                   </v-stepper-content>
                   
-                  <v-stepper-step step="6" >Participação obrigatória do segurado</v-stepper-step>
+                  <v-stepper-step step="6">Participação obrigatória do segurado</v-stepper-step>
                   <v-stepper-content step="6">
-                    <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+                    <v-card color="white lighten-1" class="mb-5" height="200px">
+                     <div>
+                       <br>
+                        <p>DANOS AO IMÓVEL 20% DA INDENIZAÇÃO AO MÍNIMO R$ 200,00     R$ 0.000,00</p>
+                    </div>
+                    </v-card>
                     <v-btn color="primary" @click="e6 = 7">Avançar</v-btn>
                     <v-btn flat="" @click="e6 = 3">Voltar</v-btn>
                   </v-stepper-content>
                   
-                  <v-stepper-step step="7"  >Forma de pagamento</v-stepper-step>
+                  <v-stepper-step step="7">Forma de pagamento</v-stepper-step>
                   <v-stepper-content step="7">
-                    <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+                    
+                    <v-data-table :items="formaPagamento" class="elevation-1">
+                      <template v-slot:items="props">
+                        <td>{{ props.item.coberturaC1 }}</td>
+                        <td>{{ props.item.premioC1 }}</td>
+                        <td>{{ props.item.coberturaC2 }}</td>
+                        <td>{{ props.item.premioC2 }}</td>
+                      </template>
+                    </v-data-table>
+                    <div>
+                      <br>
+                      <p><b>ATENÇÃO PARA VIGÊNCIA DO SEGURO</b></p>
+                      <br>
+                      <p>Lorem ipsum dui molestie tempor taciti vehicula semper bibendum purus, sit phasellus taciti urna mauris bibendum in lacinia, interdum faucibus tellus donec porta ligula facilisis elit. mi sem eleifend tortor ante inceptos nec eleifend vel conubia, cras etiam sociosqu nisi imperdiet leo quis malesuada, id netus est lorem ultricies curabitur tempor ultrices. cursus augue nostra nunc dolor quisque convallis, scelerisque augue cursus mollis eleifend ultrices senectus, conubia risus hendrerit dui leo. potenti lobortis ut metus class urna leo velit neque, senectus aliquam metus habitant placerat elit aliquam massa velit, aptent sollicitudin amet tempor nunc litora dictumst.</p>
+                    </div>
                     <v-btn color="primary" @click="e6 = 8">Avançar</v-btn>
-                    <v-btn flat="" @click="e6 = 3">Voltar</v-btn>
+                    <v-btn flat="" @click="e6 = 6">Voltar</v-btn>
                   </v-stepper-content>
                 
-                  <v-stepper-step step="8"  >Avisos</v-stepper-step>
+                  <v-stepper-step step="8">Avisos</v-stepper-step>
                   <v-stepper-content step="8">
-                    <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
+                    <div>
+                      <br>
+                      <br>
+                      <p>Lorem ipsum dui molestie tempor taciti vehicula semper bibendum purus, sit phasellus taciti urna mauris bibendum in lacinia, interdum faucibus tellus donec porta ligula facilisis elit. mi sem eleifend tortor ante inceptos nec eleifend vel conubia, cras etiam sociosqu nisi imperdiet leo quis malesuada, id netus est lorem ultricies curabitur tempor ultrices. cursus augue nostra nunc dolor quisque convallis, scelerisque augue cursus mollis eleifend ultrices senectus, conubia risus hendrerit dui leo. potenti lobortis ut metus class urna leo velit neque, senectus aliquam metus habitant placerat elit aliquam massa velit, aptent sollicitudin amet tempor nunc litora dictumst.</p>
+                      <br>
+                      <br>
+                      <p>Lorem ipsum dui molestie tempor taciti vehicula semper bibendum purus, sit phasellus taciti urna mauris bibendum in lacinia, interdum faucibus tellus donec porta ligula facilisis elit. mi sem eleifend tortor ante inceptos nec eleifend vel conubia, cras etiam sociosqu nisi imperdiet leo quis malesuada, id netus est lorem ultricies curabitur tempor ultrices. cursus augue nostra nunc dolor quisque convallis, scelerisque augue cursus mollis eleifend ultrices senectus, conubia risus hendrerit dui leo. potenti lobortis ut metus class urna leo velit neque, senectus aliquam metus habitant placerat elit aliquam massa velit, aptent sollicitudin amet tempor nunc litora dictumst.</p>
+                      <br>
+                      <br>
+                      <p>Lorem ipsum dui molestie tempor taciti vehicula semper bibendum purus, sit phasellus taciti urna mauris bibendum in lacinia, interdum faucibus tellus donec porta ligula facilisis elit. mi sem eleifend tortor ante inceptos nec eleifend vel conubia, cras etiam sociosqu nisi imperdiet leo quis malesuada, id netus est lorem ultricies curabitur tempor ultrices. cursus augue nostra nunc dolor quisque convallis, scelerisque augue cursus mollis eleifend ultrices senectus, conubia risus hendrerit dui leo. potenti lobortis ut metus class urna leo velit neque, senectus aliquam metus habitant placerat elit aliquam massa velit, aptent sollicitudin amet tempor nunc litora dictumst.</p>
+                    </div>
                     <v-btn color="primary" @click="e6 = 1">Avançar</v-btn>
-                    <v-btn flat="" @click="e6 = 1">Voltar</v-btn>
+                    <v-btn flat="" @click="e6 = 7">Voltar</v-btn>
                   </v-stepper-content>
                   
                 </v-stepper>
@@ -331,12 +374,38 @@
    
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+<!-- jsdelivr cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/vee-validate@latest/dist/vee-validate.js">		</script>
+<!-- unpkg -->
+    <script src="https://unpkg.com/vee-validate@latest"></script>
     <script>
       
+      Vue.use(VeeValidate);
+      
       Vue.component('button-counter', {
+        $_veeValidate: {
+          validator: 'new'
+        },
         data: () => ({
           drawer: false,
           e6: 1,
+          tipoPessoaSelecionado: 0,
+          unidadesOperacionais: ['Unidade 01', 'Unidade 02', 'Unidade 03', 'Unidade 04'],
+          tipoPessoa: [ { label: 'Pessoa Física', value: 1 }, { label: 'Pessoa Jurídica', value: 2 } ],
+          estadoCivil: [ { label: 'Solteiro', value: 1 }, { label: 'Casado', value: 2 }, { label: 'Separado', value: 3 },{ label: 'Divorciado', value: 4 }, { label: 'Viúvo', value: 5 } ],
+          email: '',
+          renda: 0,
+          rendaFormatado: 'R$ 0,00',
+          maskCPF: '###.###.###/##',
+          maskCNPJ: '##.###.###/####-##',
+          maskCEP: '##.###-###',
+          emailRules: [
+                        v => !!v || 'E-mail is required',
+                        v => /.+@.+/.test(v) || 'E-mail must be valid'
+                      ],
+          requiredRule: [
+                        v => !!v || 'Campo obrigatório'
+                      ],
           headers: [
                     {
                       text: 'Cobertura',
@@ -354,17 +423,90 @@
                       premio: 1000.0
                     },
                   ],
-                  unidadesOperacionais: ['Unidade 01', 'Unidade 02', 'Unidade 03', 'Unidade 04'],
+                  demonstrativoPremio: [
+                  {
+                    coberturaC1: 'PRÊMIO LÍQUIDO COBERTURAS',
+                    premioC1: 10000,
+                    coberturaC2: 'CUSTO DE APÓLICE',
+                    premioC2: 10000
+                  },
+                  {
+                    coberturaC1: 'PRÊMIO LÍQUIDO CLÁUSULAS',
+                    premioC1: 10000,
+                    coberturaC2: 'IOF',
+                    premioC2: 10000,
+
+                  },
+                  {
+                    coberturaC1: 'PRÊMIO LÍQUIDO TOTAL',
+                    premioC1: 10000,
+                    coberturaC2: 'PRÊMIO TOTAL A VISTA',
+                    premioC2: 10000
+                  },
+                ],
+          formaPagamento: [
+                {
+                  coberturaC1: 'DESCRIÇÃO',
+                  premioC1: 10000,
+                  coberturaC2: 'JUROS',
+                  premioC2: 10000
+                },
+                {
+                  coberturaC1: 'VALOR 1ª PARCELA',
+                  premioC1: 10000,
+                  coberturaC2: 'CUSTO APÓLICE',
+                  premioC2: 10000,
+
+                },
+                {
+                  coberturaC1: 'VALOR DEMAIS PARCELAS',
+                  premioC1: 10000,
+                  coberturaC2: 'IOF',
+                  premioC2: 10000
+                },
+              ],
         }),
         props: {
           source: String
         },
-        template:'#baseline-template' 
+        template:'#baseline-template' ,
+        methods: {
+                    complete_avancar: function(){
+                      return e6 > 1
+                    },
+                    avancar_teste: function(){
+                      return e6 = 2
+                    },
+                    avancar_dados_corretor(){ 
+                      this.$validator.validate("email").then((result) =>{
+                        if(result){
+                          alert(e6);
+                          e6 = 2;
+                          alert(e6);
+                        }else 
+                            {
+                              alert('Email incorreto');
+                            }
+                      });
+                    },
+                    formatPrice(value) {
+                        let val = (value/1).toFixed(2).replace('.', ',')
+                        return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+                    },
+                    formatarValorFinanceiro(value){
+                      this.renda = this.formatPrice(value);
+                    }
+                  }
       });
 
       new Vue({
-              el: '#app'
-            });
+              el: '#app',
+              $_veeValidate: {
+                validator: 'new'
+              },
+            }
+             
+            );
      
       
       
