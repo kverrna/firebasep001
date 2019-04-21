@@ -16,8 +16,11 @@
     <script defer="" src="/__/firebase/5.9.2/firebase-storage.js"></script>
     <!-- initialize the SDK after all desired features are loaded -->
     <script defer="" src="/__/firebase/init.js"></script>
-  <template id="baseline-template">
-    <v-app id="inspire">
+ </head>
+  
+  <body>
+    <div id="app">
+     <v-app>
       <v-navigation-drawer v-model="drawer" fixed="" app="">
         <v-list dense="">
           <v-list-tile @click="">
@@ -358,18 +361,6 @@
         <span class="white--text">© 2017</span>
       </v-footer>
     </v-app>
-  </template></head>
-  
- 
-  <body>
-    <div id="app">
-      <v-app>
-        <v-content>
-          <v-container>
-            <button-counter></button-counter>
-          </v-container>
-        </v-content>
-      </v-app>
     </div>
    
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -380,101 +371,98 @@
     <script src="https://unpkg.com/vee-validate@latest"></script>
     <script>
       
-      Vue.use(VeeValidate);
+    Vue.use(VeeValidate);
       
-      Vue.component('button-counter', {
-        $_veeValidate: {
-          validator: 'new'
-        },
-        data: () => ({
-          drawer: false,
-          e6: 1,
-          tipoPessoaSelecionado: 0,
-          unidadesOperacionais: ['Unidade 01', 'Unidade 02', 'Unidade 03', 'Unidade 04'],
-          tipoPessoa: [ { label: 'Pessoa Física', value: 1 }, { label: 'Pessoa Jurídica', value: 2 } ],
-          estadoCivil: [ { label: 'Solteiro', value: 1 }, { label: 'Casado', value: 2 }, { label: 'Separado', value: 3 },{ label: 'Divorciado', value: 4 }, { label: 'Viúvo', value: 5 } ],
-          email: '',
-          renda: 0,
-          cep: null,
-          uf: null,
-          cidade: null,
-          logradouro: null,
-          rendaFormatado: 'R$ 0,00',
-          maskCPF: '###.###.###/##',
-          maskCNPJ: '##.###.###/####-##',
-          maskCEP: '##.###-###',
-          emailRules: [
-                        v => !!v || 'E-mail is required',
-                        v => /.+@.+/.test(v) || 'E-mail must be valid'
-                      ],
-          requiredRule: [
-                        v => !!v || 'Campo obrigatório'
-                      ],
-          headers: [
-                    {
-                      text: 'Cobertura',
-                      align: 'left',
-                      sortable: false,
-                      value: 'name'
-                    },
-                    { text: 'Verba declarada', value: 'verbaDeclarada', sortable: false, },
-                    { text: 'Prêmio Líquido', value: 'premioLiquido', sortable: false, },
-                  ],
-                  coberturasDados: [
-                    {
-                      cobertura: 'Aluguel',
-                      verba: 1000.0,
-                      premio: 1000.0
-                    },
-                  ],
-                  demonstrativoPremio: [
-                  {
-                    coberturaC1: 'PRÊMIO LÍQUIDO COBERTURAS',
-                    premioC1: 10000,
-                    coberturaC2: 'CUSTO DE APÓLICE',
-                    premioC2: 10000
-                  },
-                  {
-                    coberturaC1: 'PRÊMIO LÍQUIDO CLÁUSULAS',
-                    premioC1: 10000,
-                    coberturaC2: 'IOF',
-                    premioC2: 10000,
+    const vue =  new Vue({
+              el: '#app',
+              $_veeValidate: {
+                validator: 'new'
+              },
+              data: () => ({
+                  drawer: false,
+                  e6: 1,
+                  tipoPessoaSelecionado: 0,
+                  unidadesOperacionais: ['Unidade 01', 'Unidade 02', 'Unidade 03', 'Unidade 04'],
+                  tipoPessoa: [ { label: 'Pessoa Física', value: 1 }, { label: 'Pessoa Jurídica', value: 2 } ],
+                  estadoCivil: [ { label: 'Solteiro', value: 1 }, { label: 'Casado', value: 2 }, { label: 'Separado', value: 3 },{ label: 'Divorciado', value: 4 }, { label: 'Viúvo', value: 5 } ],
+                  email: '',
+                  renda: 0,
+                  cep: null,
+                  uf: 'UF',
+                  cidade: 'cidade',
+                  logradouro: 'localidade',
+                  rendaFormatado: 'R$ 0,00',
+                  maskCPF: '###.###.###/##',
+                  maskCNPJ: '##.###.###/####-##',
+                  maskCEP: '##.###-###',
+                  emailRules: [
+                                v => !!v || 'E-mail is required',
+                                v => /.+@.+/.test(v) || 'E-mail must be valid'
+                              ],
+                  requiredRule: [
+                                v => !!v || 'Campo obrigatório'
+                              ],
+                  headers: [
+                            {
+                              text: 'Cobertura',
+                              align: 'left',
+                              sortable: false,
+                              value: 'name'
+                            },
+                            { text: 'Verba declarada', value: 'verbaDeclarada', sortable: false, },
+                            { text: 'Prêmio Líquido', value: 'premioLiquido', sortable: false, },
+                          ],
+                          coberturasDados: [
+                            {
+                              cobertura: 'Aluguel',
+                              verba: 1000.0,
+                              premio: 1000.0
+                            },
+                          ],
+                          demonstrativoPremio: [
+                          {
+                            coberturaC1: 'PRÊMIO LÍQUIDO COBERTURAS',
+                            premioC1: 10000,
+                            coberturaC2: 'CUSTO DE APÓLICE',
+                            premioC2: 10000
+                          },
+                          {
+                            coberturaC1: 'PRÊMIO LÍQUIDO CLÁUSULAS',
+                            premioC1: 10000,
+                            coberturaC2: 'IOF',
+                            premioC2: 10000,
 
-                  },
-                  {
-                    coberturaC1: 'PRÊMIO LÍQUIDO TOTAL',
-                    premioC1: 10000,
-                    coberturaC2: 'PRÊMIO TOTAL A VISTA',
-                    premioC2: 10000
-                  },
-                ],
-          formaPagamento: [
-                {
-                  coberturaC1: 'DESCRIÇÃO',
-                  premioC1: 10000,
-                  coberturaC2: 'JUROS',
-                  premioC2: 10000
-                },
-                {
-                  coberturaC1: 'VALOR 1ª PARCELA',
-                  premioC1: 10000,
-                  coberturaC2: 'CUSTO APÓLICE',
-                  premioC2: 10000,
+                          },
+                          {
+                            coberturaC1: 'PRÊMIO LÍQUIDO TOTAL',
+                            premioC1: 10000,
+                            coberturaC2: 'PRÊMIO TOTAL A VISTA',
+                            premioC2: 10000
+                          },
+                        ],
+                  formaPagamento: [
+                        {
+                          coberturaC1: 'DESCRIÇÃO',
+                          premioC1: 10000,
+                          coberturaC2: 'JUROS',
+                          premioC2: 10000
+                        },
+                        {
+                          coberturaC1: 'VALOR 1ª PARCELA',
+                          premioC1: 10000,
+                          coberturaC2: 'CUSTO APÓLICE',
+                          premioC2: 10000,
 
-                },
-                {
-                  coberturaC1: 'VALOR DEMAIS PARCELAS',
-                  premioC1: 10000,
-                  coberturaC2: 'IOF',
-                  premioC2: 10000
-                },
-              ],
-        }),
-        props: {
-          source: String
-        },
-        template:'#baseline-template' ,
-        methods: {
+                        },
+                        {
+                          coberturaC1: 'VALOR DEMAIS PARCELAS',
+                          premioC1: 10000,
+                          coberturaC2: 'IOF',
+                          premioC2: 10000
+                        },
+                      ],
+                }),
+              methods: {
                     complete_avancar: function(){
                       return e6 > 1
                     },
@@ -494,29 +482,24 @@
                       .then(function(data) {
                         const { erro } = data;
                         if(erro){
+                          alert("CEP não localizado")
                           console.log('Cep não encontrado')
                         }else
                           {
                             const { bairro, localidade, logradouro, uf } = data;
-                            this.cidade = localidade;
-                            this.uf = uf;
-                            this.logradouro = logradouro;
+                            vue.cidade = localidade;
+                            vue.uf = uf;
+                            vue.logradouro = logradouro;
                             console.log(`Bairro: ${bairro}, Logradouro: ${logradouro}, Localidade: ${localidade}, UF: ${uf}`);
                           }
                         
                         })
                       .catch(function(error) {
+
                         console.log(`Erro ${error}`)
                       });  
                     }
-                  }
-      });
-
-      new Vue({
-              el: '#app',
-              $_veeValidate: {
-                validator: 'new'
-              },
+                  },
             }
              
             );
